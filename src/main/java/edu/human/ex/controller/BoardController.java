@@ -1,7 +1,10 @@
 package edu.human.ex.controller;
 
+import edu.human.ex.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,10 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/board/*")
 public class BoardController {
 
-    @GetMapping
-    public String home() {
-        return "안녕하세요";
+    @Autowired
+    private BoardService boardService;
 
+    @GetMapping("/list")
+    public String list(Model model) {
+
+        log.info("list() ..");
+        model.addAttribute("boards",boardService.getList());
+
+        return "/views/board/list";
     }
 
 }

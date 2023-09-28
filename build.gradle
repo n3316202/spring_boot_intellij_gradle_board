@@ -22,13 +22,18 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//Thymeleaf dialect 사용
+	implementation('nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect')
+
+	//Thymeleaf를 사용할 수 있도록 thymeleaf 의존성, 라이브러리를 추가
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 	// mybatis와 관련된 dependency (jdbc, mybatis)
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
@@ -37,6 +42,10 @@ dependencies {
 	// 선언해야 테스트코드에서 사용가능
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	// Log4JDBC
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
 }
 
 tasks.named('test') {
