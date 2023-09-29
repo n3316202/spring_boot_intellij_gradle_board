@@ -1,6 +1,7 @@
 package edu.human.ex.service;
 
 import edu.human.ex.mapper.BoardMapper;
+import edu.human.ex.page.Criteria;
 import edu.human.ex.vo.BoardVO;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -54,5 +55,18 @@ public class BoardServiceImpl implements BoardService{
 	public void writeReply(BoardVO boardVO) {
 		mapper.updateShape(boardVO);
 		mapper.insertReply(boardVO);
+	}
+
+	@Override
+	public List<BoardVO> getListWithPaging(Criteria cri) {
+		log.info("getListWithPaging()......");
+		return mapper.getListWithPaging(cri);
+	}
+
+	// 페이징 처리 함수
+	@Override
+	public int getTotal() {
+		log.info("service:getTotal()..");
+		return mapper.getTotalCount();
 	}
 }

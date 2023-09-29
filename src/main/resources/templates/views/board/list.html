@@ -46,18 +46,21 @@
                                 </tbody>
                             </table>
                         </div>
+<!--                        페이징 부분-->
                         <div class="d-flex justify-content-center">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
-                                    <li class="page-item">
-                                        <button v-if="paging.pre" class="page-link" aria-label="Previous" >&laquo;</button>
-                                    </li>
-                                    <li class="page-item" >
-                                        <button  class="page-link" >버튼</button>
+                                    <li th:if="${pageMaker.pre}" class="page-item">
+                                        <a th:href="@{/board/list(pageNum=${pageMaker.startPage-1},amount=${pageMaker.cri.amount})}"> <button class="page-link"  aria-label="Next" ><<</button></a>
                                     </li>
 
-                                    <li class="page-item">
-                                        <button v-if="paging.next" class="page-link"  aria-label="Next" >&raquo;</button>
+                                    <li class="page-item" th:each="page: ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+<!--                                        <button class="page-link"><a th:text="${page}" th:href="@{/board/list(pageNum=${page},amount=${pageMaker.cri.amount})} > </a>  </button>-->
+                                        <a th:href="@{/board/list(pageNum=${page},amount=${pageMaker.cri.amount})}" ><button th:text="${page}"  class="page-link">  </button></a>
+                                    </li>
+
+                                    <li class="page-item" th:if="${ pageMaker.next && pageMaker.endPage > 0}" >
+                                        <a th:href="@{/board/list(pageNum=${pageMaker.endPage+1},amount=${pageMaker.cri.amount})}"> <button class="page-link"  aria-label="Next" >&raquo;</button></a>
                                     </li>
                                 </ul>
                             </nav>

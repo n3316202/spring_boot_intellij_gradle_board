@@ -1,5 +1,7 @@
 package edu.human.ex.controller;
 
+import edu.human.ex.page.Criteria;
+import edu.human.ex.page.PageVO;
 import edu.human.ex.service.BoardService;
 import edu.human.ex.vo.BoardVO;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +21,32 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    @GetMapping("/list")
-    public String list(Model model) {
+    //페이징 적용 안암
+//    @GetMapping("/list")
+//    public String list(Model model) {
+//
+//        log.info("list() ..");
+//        model.addAttribute("boards",boardService.getList());
+//
+//        return "/views/board/list";
+//    }
 
-        log.info("list() ..");
-        model.addAttribute("boards",boardService.getList());
+    @GetMapping("/list")
+    public String list(Criteria cri, Model model) {
+
+        log.info("list2...");
+        log.info("Criteria:" + cri);
+
+        int total = boardService.getTotal();
+        log.info("total:" + total);
+        log.info("boardService.getListWithPaging:" + boardService.getListWithPaging(cri));
+
+        model.addAttribute("boards", boardService.getListWithPaging(cri));
+        model.addAttribute("pageMaker", new PageVO(cri, total));
 
         return "/views/board/list";
     }
+
 
     @GetMapping("/content_view")
     public String content_view(HttpServletRequest request, Model model) {

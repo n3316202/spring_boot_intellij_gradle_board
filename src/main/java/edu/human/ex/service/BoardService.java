@@ -1,5 +1,6 @@
 package edu.human.ex.service;
 
+import edu.human.ex.page.Criteria;
 import edu.human.ex.vo.BoardVO;
 import lombok.*;
 
@@ -14,4 +15,8 @@ public interface BoardService {
 	public BoardVO get(int bid);
 	public int modify(BoardVO board);
 	public void writeReply(BoardVO board);
+
+	// 페이징 처리 함수
+	public int getTotal();
+	public List<BoardVO> getListWithPaging(Criteria cri);
 }
