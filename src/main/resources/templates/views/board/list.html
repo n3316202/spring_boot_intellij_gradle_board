@@ -23,7 +23,7 @@
                                     <th>제목</th>
                                     <th>날짜</th>
                                     <th>히트</th>
-                                    <th class="text-center">삭제</th>
+                                    <th class="text-center">댓글,업데이트,삭제</th>
                                 </tr>
                                 </thead>
 
@@ -32,15 +32,15 @@
                                     <td>[[${board.bid}]]</td>
                                     <td>[[${board.bname}]]</td>
                                     <td>
-<!--                                        <a :to="boardLink + '/' + board.bid">{{ board.btitle }}</a>-->
-<!--                                        <th:block  th:if="${board.bindent} > 0" th:each="num: ${#numbers.sequence(1,board.bindent)}">[Re]</th:block>-->
-                                        <a th:href="@{/board/content_view(bid=${board.bid})}">[[${board.btitle}]]</a>
+                                        <th:block  th:if="${board.bindent} > 0" th:each="num: ${#numbers.sequence(1,board.bindent)}">[Re]</th:block>
+                                        <a class="a-title" th:value="${board.bid}" th:href="@{/board/content_view(bid=${board.bid})}">[[${board.btitle}]]</a>
                                     </td>
                                     <td>[[${board.bdate}]]</td>
                                     <td>[[${board.bhit}]]</td>
 
                                     <td>
-                                        <button class="btn btn-success">삭제</button>
+                                        <button th:value="${board.bid}" class="btn btn-success btn-reply">댓글</button>
+                                        <button th:value="${board.bid}" class="btn btn-success btn-delete">삭제</button>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -66,34 +66,39 @@
                         <div class="d-flex justify-content-center">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">글쓰기</button>
                             <!-- 모달 스타트 -->
-                            <!--                            <div class="modal fade" ref="writeModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-                            <!--                                <div class="modal-dialog modal-sl modal-dialog-centered">-->
-                            <!--                                    <div class="modal-content">-->
-                            <!--                                        <div class="modal-header">-->
-                            <!--                                            <h5 class="modal-title" id="exampleModalLabel">글쓰기</h5>-->
-                            <!--                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button><br />-->
-                            <!--                                        </div>-->
-                            <!--                                        <div class="modal-body">-->
-                            <!--                                            <div class="mb-3">-->
-                            <!--                                                <label for="recipient-name" class="col-form-label">작성자:</label>-->
-                            <!--                                                <input type="text" class="form-control" v-model="board.bname" />-->
-                            <!--                                            </div>-->
-                            <!--                                            <div class="mb-3">-->
-                            <!--                                                <label for="recipient-name" class="col-form-label">제목:</label>-->
-                            <!--                                                <input type="text" class="form-control" v-model="board.btitle" />-->
-                            <!--                                            </div>-->
-                            <!--                                            <div class="mb-3">-->
-                            <!--                                                <label for="message-text" class="col-form-label">내용:</label>-->
-                            <!--                                                <textarea class="form-control" rows="8" v-model="board.bcontent"></textarea>-->
-                            <!--                                            </div>-->
-                            <!--                                        </div>-->
-                            <!--                                        <div class="modal-footer">-->
-                            <!--                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="writeBoard">전송</button>-->
-                            <!--                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>-->
-                            <!--                                        </div>-->
-                            <!--                                    </div>-->
-                            <!--                                </div>-->
-                            <!--                            </div>-->
+                            <div class="modal fade" ref="writeModal" id="exampleModal" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-sl modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">글쓰기</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            <br/>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="board-name" class="col-form-label">작성자:</label>
+                                                <input id="board-name" type="text" class="form-control"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="board-title" class="col-form-label">제목:</label>
+                                                <input id="board-title" type="text" class="form-control"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="board-content" class="col-form-label">내용:</label>
+                                                <textarea id="board-content" class="form-control" rows="8"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btn-send" type="button" class="btn btn-primary" data-bs-dismiss="modal">전송
+                                            </button>
+                                            <button id="btn-cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <!-- 모달 엔드 -->
                         </div>
                     </div>
@@ -102,4 +107,48 @@
         </div>
         <!-- /.container-fluid -->
     </main>
+    <script>
+
+        $(document).ready(function(){
+
+            $(document).on("click","#btn-send",function(){
+                console.log($(this).attr("id"));
+
+                let board = {
+                        bname: $("#board-name").val(),
+                        bcontent: $("#board-content").val(),
+                        btitle: $("#board-title").val()
+                 };
+
+                console.log(board);
+                boardService.add(board,function(){
+                    $(location).attr('href','/board/list');
+                });
+            });
+
+             $(document).on("click",".btn-delete",function(){
+                console.log($(this).val());
+
+                boardService.del($(this).val(),function(){
+                    $(location).attr('href','/board/list');
+                });
+            });
+
+             $(document).on("click",".btn-reply",function(){
+                let path = '/board/reply_view/'+ $(this).val()
+                $(location).attr('href',path);
+             });
+
+
+<!--            $(document).on("click",".a-title",function(event){-->
+<!--                event.preventDefault();-->
+
+<!--                let modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('exampleModal')) // Returns a Bootstrap modal instance-->
+<!--                // Show or hide:-->
+<!--                modal.show();-->
+<!--            });-->
+
+        });
+    </script>
+
 </div>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+
+<div layout:fragment="content">
+    <main>
+        <div class="container mt-3">
+            <div class="container">
+                <div class="row">
+                    <div class="card col-md-6 offset-md-3 offset-md-3">
+                        <h3 class="text-center">댓글을 달아 주세요</h3>
+                        <form action="/board/reply" method="post">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label> Type </label>
+                                <select placeholder="type" class="form-control">
+                                    <option value="1">자유게시판</option>
+                                </select>
+                            </div>
+
+<!--                            <input type="hidden" name="bid" th:value="${reply_view.bid}">-->
+                            <input type="hidden" name="bgroup" th:value="${reply_view.bgroup}">
+                            <input type="hidden" name="bstep" th:value="${reply_view.bstep}">
+                            <input type="hidden" name="bindent" th:value="${reply_view.bindent}">
+
+                            <div class="form-group mt-3">
+                                <label> Board ID </label>
+                                <input type="text" placeholder="bid" id="bid" name="bid" class="form-control" th:value="${reply_view.bid}" disabled/>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label> 이름 </label>
+                                <input type="text" placeholder="bname" id="bname" name="bname" class="form-control" th:value="${reply_view.bname}" />
+                            </div>
+                            <div class="form-group mt-3">
+                                <label> 제목 </label>
+                                <input placeholder="btitle" name="btitle" id="btitle" class="form-control" th:value="${reply_view.btitle}" />
+                            </div>
+                            <div class="form-group mt-3">
+                                <label> 내용 </label>
+                                <textarea placeholder="bcontent" name="bcontent" id="bcontent" class="form-control" rows="10">[[${reply_view.bcontent}]]</textarea>
+                            </div>
+                            <div class="mt-3">
+                                <button id="btn-reply" class="btn btn-success">댓글쓰기</button>
+                                <button class="btn btn-danger btn-cancel">취소</button>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+
+<!--        $(document).ready(function(){-->
+
+<!--            $(document).on("click","#btn-update",function(){-->
+<!--                console.log($(this).attr("id"));-->
+
+<!--                let board = {-->
+<!--                        bid : $("#bid").val(),-->
+<!--                        bname: $("#bname").val(),-->
+<!--                        bcontent: $("#bcontent").val(),-->
+<!--                        btitle: $("#btitle").val()-->
+<!--                 };-->
+
+<!--                console.log(board);-->
+<!--                boardService.update(board,function(){-->
+<!--                    $(location).attr('href','/board/list');-->
+<!--                });-->
+<!--            });-->
+
+<!--            $(document).on("click",".btn-cancel",function(){-->
+<!--                $(location).attr('href','/board/list');-->
+<!--            });-->
+<!--        });-->
+    </script>
+
+</div>
